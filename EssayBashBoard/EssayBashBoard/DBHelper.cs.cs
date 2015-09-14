@@ -25,5 +25,18 @@ namespace EssayBashBoard
             con.Close();
             return n;
         }
+        public int SqlReader(string CommandText)
+        {
+            int n = 0;
+            con.Open();
+            SqlCommand cmd = new SqlCommand(CommandText,con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                n++;
+            }
+            con.Close();
+            return n;
+        }
     }
 }
