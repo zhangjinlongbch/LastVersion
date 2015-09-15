@@ -1,0 +1,31 @@
+﻿@model EssayBashBoard.Models.CommentsViewModels
+
+@{
+    ViewBag.Title = "评论管理";
+    var list = (List<EssayBashBoard.Models.CommentsViewModels>)ViewBag.CommentList;
+}
+<table align="center" class="table">
+    <tr style="text-align:center">
+        <th>评论人</th>
+        <th>文章名</th>
+        <th>评论内容</th>
+    </tr>
+
+@foreach (var item in list) {
+    <tr>
+        <td style="text-align:center">
+            @item.UserId
+        </td>
+        <td style="text-align:center">
+            @item.title
+        </td>
+        <td>
+            @item.Content
+        </td>
+        <td style="text-align:center">
+            @Html.ActionLink("Delete", "Delete", new { uid = item.UserId,title = item.title },null)
+        </td>
+    </tr>
+}
+
+</table>
