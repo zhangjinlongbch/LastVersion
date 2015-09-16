@@ -1,0 +1,44 @@
+﻿@model EssayBashBoard.Models.CommentsViewModels
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var list = (List<EssayBashBoard.Models.CommentsViewModels>)ViewBag.CommentList;
+    var essay_uid = ViewBag.Essay.UserID;
+    var title = ViewBag.Essay.Title;
+    var content = ViewBag.Essay.Content;
+}
+<table align="center">
+    <tr>
+        <th align="left"><input type="text" value="@title" readonly="readonly" /></th>
+    </tr>
+    <tr>
+        <td><textarea rows="10" cols="60" readonly="readonly">@content</textarea></td>
+    </tr>
+</table>
+<hr />
+<table align="center" border="1">
+    <tr style="width:300px;">
+        <th style="text-align:center;width:100px;">评论人</th>
+        <th style="text-align:center;width:200px;">评论</th>
+    </tr>
+    @foreach (var item in list)
+    {
+        <tr style="width:300px;">
+            <td style="text-align:center;width:100px;">@item.UserId</td>
+            <td style="text-align:left;width:200px;">@item.Content</td>
+        </tr>}
+</table>
+<hr />
+<table align="center">
+    @using (Html.BeginForm("Create", "Comment", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <tr><td><h4>发表评论：</h4></td> </tr>
+        <tr><td>@Html.TextAreaFor(m => m.Content, 10, 50, null)</td></tr>
+        <tr><td align="right"><input type="submit" value="回复" /></td></tr>
+    }
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

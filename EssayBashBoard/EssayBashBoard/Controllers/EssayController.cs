@@ -11,6 +11,13 @@ namespace EssayBashBoard.Controllers
     public class EssayController : Controller
     {
 
+        public ActionResult ListEssay()
+        {
+            DBHelper tmpDBHelper = new DBHelper();
+            List<Essay> EssayList = tmpDBHelper.GetEssayList();
+            ViewBag.list = EssayList;
+            return View();
+        }
         public ActionResult CreateEssay()
         {
             return View();
@@ -19,19 +26,17 @@ namespace EssayBashBoard.Controllers
         [HttpPost]
         public ActionResult CreateEssay(Essay model)
         {
-            Session["UserId"] = "123";
             DBHelper tmpDBHelper = new DBHelper();
             var title = model.Title;
             var content = model.Content;
             var userID = Session["UserId"].ToString();
 
             tmpDBHelper.SqlExcute("insert into Essay(UserId,EssayTitle,EssayContent) values('" + userID + "','" + title + "','" + content + "')");
-            return Redirect("../Home/Index");
+            return Redirect("ListEssay");
         }
 
         public ActionResult ManageEssay()
         {
-            Session["UserId"] = "123";
             var uid = Session["UserId"].ToString();
             List<Essay> EssayList = GetEssayList(uid);
             ViewBag.list = EssayList;
@@ -60,7 +65,7 @@ namespace EssayBashBoard.Controllers
 
             tmpDBHelper.UpdateEssay(uid, old_title, old_content, new_title, new_content);
 
-            return View();
+            return Redirect("ManageEssay");
         }
 
         public ActionResult DeleteEssay(string uid, string title)

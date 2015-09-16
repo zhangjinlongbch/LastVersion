@@ -10,15 +10,15 @@ namespace EssayBashBoard.common
 {
     public class DBHelper
     {
-        private string ConStr;
+        private SqlConnection con;
         public DBHelper()
         {
-            ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["BCH_MVC_SQL"].ConnectionString;
+           string ConStr = System.Configuration.ConfigurationManager.ConnectionStrings["BCH_MVC_SQL"].ConnectionString;
+           con = new SqlConnection(ConStr);
         }
         //执行Excute操作并返回受影响的行数
         public int SqlExcute( string Cmd)
         {
-            SqlConnection con = new SqlConnection(ConStr);
             var number = 0;
             con.Open();
             SqlCommand cmd = new SqlCommand(Cmd, con);
@@ -30,27 +30,24 @@ namespace EssayBashBoard.common
             con.Close();
             return number;
         }
-        //查询是否存在用户
-        public bool UserExist(string uid)
+
+        public int SqlReader(string CmdText)
         {
-            bool IsExist = false;
-            string cmd = "select * from UserAccount where UserId = '"+uid+"'";
-            IsExist = (SqlExcute(cmd) != 0) ? true : false;
-            return IsExist;
-        }
-        //判断用户名密码
-        public bool UserCorrect(string uid , string pwd)
-        {
-            bool IsCorrect = false;
-            string cmd = "select * from UserAccount where UserId = '" + uid + "' and Pwd = '"+pwd+"'";
-            IsCorrect = (SqlExcute(cmd) != 0) ? true : false;
-            return IsCorrect;
+            var i = 0;
+            con.Open();
+            SqlCommand cmd = new SqlCommand(CmdText, con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                i++;
+            }
+            con.Close();
+            return i;
         }
         //返回文章列表
         public List<Essay> GetEssayList()
         {
             List<Essay> EssayList = new List<Essay>();
-            SqlConnection con = new SqlConnection(ConStr);
             con.Open();
             SqlCommand cmd = new SqlCommand("select * from Essay", con);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -69,7 +66,6 @@ namespace EssayBashBoard.common
         public List<Essay> GetEssayList(string uid)
         {
             List<Essay> EssayList = new List<Essay>();
-            SqlConnection con = new SqlConnection(ConStr);
             con.Open();
             SqlCommand cmd = new SqlCommand("select * from Essay where UserId = '"+uid+"'", con);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -84,34 +80,74 @@ namespace EssayBashBoard.common
             con.Close();
             return EssayList;
         }
-        //返回个人评论列表
-        public List<Comment> GetCommentList(string uid)
-        {
-            List<Comment> CommentList = new List<Comment>();
-            SqlConnection con = new SqlConnection(ConStr);
-            con.Open();
-            SqlCommand cmd = new SqlCommand("select * from Essay where UserId = '"+uid+"'", con);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Comment comment = new Comment();
-                comment.UserID = reader["UserId"].ToString();
-                comment.Content = reader["CommentContent"].ToString();
-                comment.CurrentTime = reader["CurrentTime"].ToString();
-                CommentList.Add(comment);
-            }
-            con.Close();
-            return CommentList;
-        }
 
         public void UpdateEssay(string uid,string old_title, string old_content, string new_title, string new_content)
         {
-            SqlConnection con = new SqlConnection(ConStr);
             con.Open();
             SqlCommand cmd = new SqlCommand("update Essay set EssayTitle = '" + new_title + "', EssayContent = '" + new_content + "'" +
                 " where UserID = '" + uid + "' and EssayTitle = '" + old_title + "'", con);
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
+        //根据用户名返回评论列表
+        public List<CommentsViewModels> GetCommentListByUid(string uid)
+        {
+            List<CommentsViewModels> commentsList = new List<CommentsViewModels>();
+
+            con.Open();
+            string cmdText = "select * from Comment where UserId = '" + uid + "'";
+            SqlCommand cmd = new SqlCommand(cmdText, con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                CommentsViewModels comment = new CommentsViewModels();
+                comment.UserId = uid;
+                comment.title = reader["Title"].ToString();
+                comment.Content = reader["CommentContent"].ToString();
+                commentsList.Add(comment);
+            }
+            con.Close();
+            return commentsList;
+        }
+        //根据文章名返回评论列表
+        public List<CommentsViewModels> GetCommentListByTitle(string Title)
+        {
+            List<CommentsViewModels> commentsList = new List<CommentsViewModels>();
+
+            con.Open();
+            string cmdText = "select * from Comment where Title = '" + Title + "'";
+            SqlCommand cmd = new SqlCommand(cmdText, con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                CommentsViewModels comment = new CommentsViewModels();
+                comment.UserId = reader["UserId"].ToString();
+                comment.title = Title;
+                comment.Content = reader["CommentContent"].ToString();
+                commentsList.Add(comment);
+            }
+            con.Close();
+            return commentsList;
+        }
+        //根据用户名和标题获取日志
+        public Essay GetEssyByUid_Title(string uid, string title)
+        {
+            con.Open();
+            Essay essay = new Essay();
+            string cmdText = "select * from Essay where UserId = '" + uid + "'and EssayTitle = '" + title + "'";
+            SqlCommand cmd = new SqlCommand(cmdText, con);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+
+                essay.UserID = uid;
+                essay.Title = title;
+                essay.Content = reader["EssayContent"].ToString();
+            }
+            con.Close();
+            return essay;
+        }
+
     }
 }

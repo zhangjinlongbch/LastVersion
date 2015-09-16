@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EssayBashBoard.Models;
+using EssayBashBoard.common;
 
 namespace EssayBashBoard.Controllers
 {
@@ -66,28 +67,24 @@ namespace EssayBashBoard.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            // 这不会计入到为执行帐户锁定而统计的登录失败次数中
-            // 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            else
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "无效的登录尝试。");
+                if (ExistAccount(model.UserId, model.Pwd))
+                {
+                    Session["UserId"] = model.UserId;
+                    return Redirect("~/Essay/ListEssay");
+                }
+                else
+                {
+                    Response.Write("<script>alert('用户名或密码错误')</script>");
                     return View(model);
+                }
             }
         }
 
@@ -147,25 +144,21 @@ namespace EssayBashBoard.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (!ExistAccount(model.UserId))
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
-                    // 发送包含此链接的电子邮件
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">這裏</a>来确认你的帐户");
-
-                    return RedirectToAction("Index", "Home");
+                    DBHelper db = new DBHelper();
+                    db.SqlExcute(StoreAccountText(model.UserId, model.Pwd));
+                    return Redirect("~/Essay/ListEssay");
                 }
-                AddErrors(result);
+                else
+                {
+                    Response.Write("<script>alert('该手机号码已被注册')</script>");
+                    return View(model);
+                }
             }
 
             // 如果我们进行到这一步时某个地方出错，则重新显示表单
@@ -481,5 +474,27 @@ namespace EssayBashBoard.Controllers
             }
         }
         #endregion
+        //判断用户名是否被注册~~~
+        private bool ExistAccount(string uid,string pwd=null)
+        {
+            bool Exist = false;
+            DBHelper db = new DBHelper();
+            var n = 0;
+            if (pwd == null)
+            {
+                n = db.SqlReader("select * from UserAccount where UserId = '" + uid + "'");
+            }
+            else
+            {
+                n = db.SqlReader("select * from UserAccount where UserId = '" + uid + "' and Pwd = '" + pwd + "'");
+            }
+            Exist = (n > 0) ? true : false;
+            return Exist;
+        }
+        private string StoreAccountText(string uid, string pwd)
+        {
+            string cmd = "Insert into UserAccount(UserId,Pwd) values('"+uid+"','"+pwd+"')";
+            return cmd;
+        }
     }
 }

@@ -79,7 +79,6 @@ C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\roslyn\S
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\roslyn\vbc.exe
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\roslyn\VBCSCompiler.exe
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\EssayBashBoard.dll.config
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\EssayBashBoard.dll
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\EssayBashBoard.pdb
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\Antlr3.Runtime.dll
@@ -136,3 +135,4 @@ C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\Microsof
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\obj\Debug\EssayBashBoard.csprojResolveAssemblyReference.cache
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\obj\Debug\EssayBashBoard.dll
 C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\obj\Debug\EssayBashBoard.pdb
+C:\Users\WANGJJ\Documents\LastVersion\EssayBashBoard\EssayBashBoard\bin\EssayBashBoard.dll.config

@@ -19,15 +19,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("应用程序名称", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("主页", "ListEssay", "Essay")</li>
                     <li>@Html.ActionLink("创建日志", "CreateEssay", "Essay")</li>
                     <li>@Html.ActionLink("日志管理", "ManageEssay", "Essay")</li>
+                    <li>@Html.ActionLink("评论管理", "Index", "Comment")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>

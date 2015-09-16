@@ -49,36 +49,33 @@ namespace EssayBashBoard.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "电子邮件")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "用户名")]
+        public string UserId { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
-        public string Password { get; set; }
+        public string Pwd { get; set; }
 
-        [Display(Name = "记住我?")]
-        public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
+        [Display(Name = "手机号码")]
+        [StringLength(11, ErrorMessage = "{0} 必须为 {2} 位。",MinimumLength =11)]
+        public string UserId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "密码")]
-        public string Password { get; set; }
+        public string Pwd { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
-        public string ConfirmPassword { get; set; }
+        [Compare("Pwd", ErrorMessage = "密码和确认密码不匹配。")]
+        public string ConfirmPwd{ get; set; }
     }
 
     public class ResetPasswordViewModel
