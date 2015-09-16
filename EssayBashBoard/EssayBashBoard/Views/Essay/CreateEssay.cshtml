@@ -1,0 +1,36 @@
+﻿@model EssayBashBoard.Models.Essay
+@{
+    ViewBag.Title = "Create_Essay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CreateEssay</h2>
+
+@using (Html.BeginForm("CreateEssay", "Essay", FormMethod.Post))
+{
+    
+    <table>
+        <tr>
+            <td>
+                @Html.Label("标题")
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Title)<br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Label("内容")
+            </td>
+            <td>
+                @Html.TextAreaFor(m => m.Content, new { rows = "30", cols = "90" })
+            </td>
+        </tr>
+
+        <tr>
+            <td align="center">
+                <input type="submit" value="提交" />
+            </td>
+        </tr>
+    </table>
+}
