@@ -1,0 +1,24 @@
+﻿@using System.Web.Mvc
+@model EssayBashBoard.Models.Essay
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+
+    <table border="0" width="500" height="500">
+        <tr style="height:10%">
+            <th>
+                <input type="text" value="@ViewBag.title" readonly="readonly">
+            </th>
+        </tr>
+        <tr style="height:90%;width:90%">
+            <td> 
+                <textarea cols="90" rows="30" readonly="readonly"> @ViewBag.content </textarea>
+            </td>
+        </tr>
+
+    </table>
+
+

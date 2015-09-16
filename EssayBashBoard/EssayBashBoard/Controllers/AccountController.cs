@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EssayBashBoard.Models;
+using EssayBashBoard.common;
 
 namespace EssayBashBoard.Controllers
 {
@@ -77,11 +78,11 @@ namespace EssayBashBoard.Controllers
                 if (ExistAccount(model.UserId, model.Pwd))
                 {
                     Session["UserId"] = model.UserId;
-                    return Redirect("~/Home/Index");
+                    return Redirect("~/Essay/ListEssay");
                 }
                 else
                 {
-                    Response.Write("<script>alert('该用户不存在')</script>");
+                    Response.Write("<script>alert('用户名或密码错误')</script>");
                     return View(model);
                 }
             }
@@ -151,7 +152,8 @@ namespace EssayBashBoard.Controllers
                 {
                     DBHelper db = new DBHelper();
                     db.SqlExcute(StoreAccountText(model.UserId, model.Pwd));
-                    return Redirect("~/Home/Index");
+
+                    return Redirect("~/Essay/ListEssay");
                 }
                 else
                 {

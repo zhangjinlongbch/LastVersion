@@ -3,40 +3,40 @@
 @{
     ViewBag.Title = "登录";
 }
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <table width="200" height="200" border="1" align="center" style="border-color:cornflowerblue;border-width:thick;vertical-align:middle">
-                    <tr style="width:15%;text-align:center">
-                        <td>
-                            <h4>@ViewBag.Title</h4>
-                        </td>
-                    </tr>
-                    <tr style="width:35%">
-                        <td>
-                            @Html.LabelFor(m => m.UserId, new { @class = "col-md-2 control-label" }):
-                            @Html.TextBoxFor(m => m.UserId, new { @class = "form-control" })
-                            <br />
-                            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr style="width:35%">
-                        <td>
-                            @Html.LabelFor(m => m.Pwd, new { @class = "col-md-2 control-label" }):
-                            @Html.PasswordFor(m => m.Pwd, new { @class = "form-control" })
-                            <br />
-                            @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
-                        </td>
-                    </tr>
-                    <tr style="width:15%">
-                        <td>
-                            <input type="submit" value="登录" class="btn btn-default" />
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.ActionLink("注册", "Register")
-                        </td>
-                    </tr>
-                </table>
-            }
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <table width="200" height="200" border="1" align="center" style="border-color:cornflowerblue;border-width:thick;vertical-align:middle">
+        <tr style="width:15%;text-align:center">
+            <td>
+                <h4>@ViewBag.Title</h4>
+            </td>
+        </tr>
+        <tr style="width:35%">
+            <td>
+                @Html.LabelFor(m => m.UserId, new { @class = "col-md-2 control-label" }):
+                @Html.TextBoxFor(m => m.UserId, new { @class = "form-control" })
+                <br />
+                @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr style="width:35%">
+            <td>
+                @Html.LabelFor(m => m.Pwd, new { @class = "col-md-2 control-label" }):
+                @Html.PasswordFor(m => m.Pwd, new { @class = "form-control" })
+                <br />
+                @Html.ValidationMessageFor(m => m.Pwd, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr style="width:15%">
+            <td>
+                <input type="submit" value="登录" class="btn btn-default" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.ActionLink("注册", "Register")
+            </td>
+        </tr>
+    </table>
+}
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

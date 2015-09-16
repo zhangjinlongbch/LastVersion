@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "ListEssay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var list = (List<EssayBashBoard.Models.Essay>)ViewBag.list;
+}
+
+<h2>ListEssay</h2>
+
+<table>
+    <tr>
+        <th>
+            文章标题
+        </th>
+        <th>
+            作者
+        </th>
+    </tr>
+    @foreach (EssayBashBoard.Models.Essay essay in list)
+    {
+        <tr>
+            <td>
+                @essay.Title
+            </td>
+            <td>
+                @essay.UserID
+            </td>
+            <td>
+                @Html.ActionLink("详细", "Create", "Comment", new { uid = essay.UserID, title = essay.Title }, null)
+            </td>
+        </tr>
+    }
+</table>
